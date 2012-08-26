@@ -16,19 +16,17 @@
 			<td id="left">
 				<ul>
 					<li><b>Method Index</b></li>
-					<li>id</li>
 					<li>all</li>
-					<li>many</li>
-					<li>update</li>
-					<li>find</li>
+					<li>byId</li>
+					<li>by</li>
 				</ul>
 			</td>
 
 			<td id="right">
 				
-				<h4><b>create</b>(<i>options</i>, <i>object</i>, <i>callback</i>) </h4>
+				<h4><b>all</b> => Array[instance, ...]</h4>
 				
-				Writes data to localDatabase or to server
+				Returns an array of all the local instances 
 				
 				<table>
 					<th>Option</th>
@@ -38,6 +36,38 @@
 						<td>Boolean</td>
 					</tr>
 				</table>
+
+				<h4><b>byId</b>(<i>id</i>) => instance</h4>
+				
+				Returns an instance that matches the id.
+				
+				<table>
+					<th>Option</th>
+					<th>Return Type</th>
+					<tr>
+						<td>id</td>
+						<td>Integer</td>
+					</tr>
+				</table>
+
+				<h4><b>by</b>(<i>key</i>, <i>value</i>) => Array[instance, ...]</h4>
+				
+				Returns an array of instances which match the key value pair.
+				
+				<table>
+					<th>Option</th>
+					<th>Return Type</th>
+					<tr>
+						<td>key</td>
+						<td>String</td>
+					</tr>
+					<tr>
+						<td>value</td>
+						<td>Any</td>
+					</tr>
+				</table>
+
+
 
 			</td>
 		</tr>

@@ -9,9 +9,7 @@ var AbstractFind = function(opts){
 	*/
 	var self = this;
 
-	this.set_self = function(s){
-		self = s;
-	}
+	this.set_self = function(s){ self = s; }
 
 	function convert_table_instances_to_model_instances(tbl_instances){
 		var instances = []
