@@ -6,18 +6,22 @@ module("Keynesian Model", {
 
 var UserFactory = {
 	create: function(){
+		
 		var User = {}
 		opts = {
 			"name":"user",
 			"fields":{
 				"id":"", "type":"User","email":"","first_name":"","last_name":""
-			}
+			},
+			"key":"id"
 		}
 		KeynesianModel.call(User, opts);
+
 		user_data = [User, opts]
 		return user_data;
 	},
 	create_many: function(){
+		u = create()
 	}
 }
 
@@ -113,14 +117,6 @@ test("finding by id", function(){
 	u = UserFactory.create();
 	var user = u[0], opts = u[1]
 	lord_keynes = user.find.byId(1)
-	if(lord_keynes.first_name == "John")
-		ok(true, "Correctly looked up by id")
-});
-
-test("find all", function(){
-	u = UserFactory.create();
-	var user = u[0], opts = u[1]
-	lord_keynes = user.find.all()
 	if(lord_keynes.first_name == "John")
 		ok(true, "Correctly looked up by id")
 });

@@ -1,6 +1,5 @@
 jQuery.ajaxPrefilter("script", function(s) {s.crossDomain = true;});
-var Keynes = {
-};
+var Keynes = {};
 
 /* 
 		Originally from: http://stackoverflow.com/questions/4288759/asynchronous-for-cycle-in-javascript
@@ -44,12 +43,13 @@ AsyncLoop.call(Keynes)
 
 var KeynesStartUpFiles = function(){ 
 	this.framework_startup_files = 
-		["utils/keynesian.logger.js",
-		 "mvc/model/exceptions/no_local_storage_error.js",
-		 "mvc/model/exceptions/inserting_to_local_database_failed_error.js",
-		 "mvc/model/exceptions/local_find_error.js",
-		 "mvc/model/find.js",
-		 "mvc/keynesian.model.js"
+		["/utils/keynesian.logger.js",
+		 "/utils/router.js",
+		 "/mvc/model/exceptions/no_local_storage_error.js",
+		 "/mvc/model/exceptions/inserting_to_local_database_failed_error.js",
+		 "/mvc/model/exceptions/local_find_error.js",
+		 "/mvc/model/find.js",
+		 "/mvc/keynesian.model.js"
 		];
 }
 KeynesStartUpFiles.call(Keynes)
@@ -69,6 +69,8 @@ var powerButtons = function(){
 
 		if (config.environment == "test"){
 			startup_files = startup_files.concat(config.tests)
+		}else{
+			startup_files = startup_files.concat(config.models)
 		}
 
 		this.asyncLoop(startup_files.length, function(loop){
@@ -83,6 +85,7 @@ var powerButtons = function(){
 			});
 		
 		}, function(){
+			Router.call(Keynes);
 			// BootUp.call(Keynes);
 		});
 	
