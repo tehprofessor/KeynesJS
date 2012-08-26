@@ -32,7 +32,7 @@ Keynes.Model = function() {
 	function storeInLocalDB(data){
 		var tmpTable = db.getItem(model_name)
 		var table = jQuery.parseJSON(tmpTable);
-		table[data.id] = data;
+		table[data.id] = data.unapply();
 		db.setItem(model_name, JSON.stringify(table));
 	}
 
@@ -141,4 +141,6 @@ Keynes.Model = function() {
 
 	AbstractFind.call(Find, {"db": db, "name": model_name})
 	this.find = Find;
+	this.find.set_self(this.find);
+	this.find.build_instance = build_instance;
 }

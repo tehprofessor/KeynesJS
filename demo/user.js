@@ -6,7 +6,7 @@
 var User = new Keynes.Model("User", {
 	storage: {
 		remote: false,
-		local: false
+		local: true
 	},
 	attributes: {
 		"email":"",
