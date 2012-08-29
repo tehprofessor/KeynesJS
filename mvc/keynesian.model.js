@@ -128,10 +128,11 @@ Keynes.Model.Base = function() {
 
 			}
 
-			// Add the foreign keys
+			// Check if we need to add foreign keys
 
-			if(foreign_key_data[0]){
-				dao[foreign_key_data[1]] = foreign_key_data[2]
+			if(foreign_key_data){
+				if(foreign_key_data[0])
+					dao[foreign_key_data[1]] = foreign_key_data[2]
 			}
 
 			dao["id"] = instance["id"]
