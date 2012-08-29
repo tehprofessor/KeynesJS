@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Keynesian Model Documentation : KeynesJS</title>
+		<script type="text/javascript" src="/vendor/mustache"></script>
+		<link rel="stylesheet" type="text/css" href="/docs/docs.css">
+		<meta charset="UTF-8">
+	</head>
+
+	<body>
+				<h1><a href="/docs/index.html">KeynesJS</a></h1>
+				
+				<h2> Keynes.Model </h2>
+	<table>
+		<tr>
+			<td id="left">
+				<ul>
+					<li><b>ClassList</b></li>
+					<li><a href="/docs/models/base.html">Base</a></li>
+					<li><a href="/docs/models/find.html">Find</a></li>
+					<li><a href="/docs/models/associations.html">Associations</a></li>
+				</ul>
+			</td>
+
+			<td id="right">
+				
+				<h4><b>Base</b>(<i>name</i>, <i>object</i>) => Keynes.Model.Base </h4>
+				
+				<p>The base of Keynes.Model, contains most of the logic for the model Object. The <code>object</code> argument has a few reserved properties. All reserved properties are expected to be Objects themselves.</p>
+
+				<p>All properties which are not reserved, will be assigned to instances of the model.</p>
+
+				<p>Below are the reserved property names:</p>
+
+				<ul>
+					<li><b>storage</b> (<i>remote</i>, <i>local</i>)</li>
+					<li><b>has_many/belongs_to</b> (<i>association_name</i>, <i>associated_object</i>)</li>
+					<li><b>attributes</b> (<i>property1</i>, <i>property2</i>, ...)</li>
+				</ul> 
+				
+				<table>
+					<th>Option</th>
+					<th>Type</th>
+					<th>Description</th>
+					<tr>
+						<td>name</td>
+						<td>String</td>
+						<td>Name of the model (e.g. User)</td>
+					</tr>
+					<tr>
+						<td>object</td>
+						<td>Object</td>
+						<td>The definitions of the model.</td>
+					</tr>
+				</table>
+			
+			
+			
+			
+				<h4><b>Find</b>(<i>db</i>, <i>name</i>) => Keynes.Model.Find </h4>
+				
+				Logic pertaining to looking up data stored locally or remotely.
+				
+				<table>
+					<th>Option</th>
+					<th>Type</th>
+					<th>Description</th>
+					<tr>
+						<td>db</td>
+						<td>localStorage</td>
+						<td>Key/value store provided by the browser</td>
+					</tr>
+					<tr>
+						<td>name</td>
+						<td>String</td>
+						<td>Name of model</td>
+					</tr>
+				</table>
+			
+			
+			
+			
+			
+				<h4><b>Associations</b>(<i>instance</i>, <i>other_model_name</i>, association_type) => [Keynes.Model.Base, ...] </h4>
+				
+				Manages the logic for relationships between models.
+				
+				<table>
+					<tr>
+						<th>Option</th>
+						<th>Type</th>
+						<th>Description</th>
+					</tr>
+					<tr>
+						<td>instance</td>
+						<td>Object</td>
+						<td>An `instance` of the model</td>
+					</tr>
+					<tr>
+						<td>other_model_name</td>
+						<td>String</td>
+						<td>The other model in the relationship</td>
+					</tr>
+					<tr>
+						<td>association_type</td>
+						<td>String</td>
+						<td>The type of association (e.g. belongs_to)</td>
+					</tr>
+				</table>
+			
+			
+			</td>
+		</tr>
+	</body>
+</html>

@@ -103,8 +103,8 @@
 			table { border-collapse: collapse; border-spacing: 0; margin-top: 20px;}
 			td { vertical-align: top; }
 			#right th, #right td { width: 200px; text-align: left;}
-			#right { width: 520px; }
-			#left { width: 200px; }
+			#right { width: 490px; }
+			#left { width: 230px; }
 			@media only screen and (min-width: 480px) {
 			body{font-size:14px;}
 			}

@@ -1,5 +1,13 @@
 jQuery.ajaxPrefilter("script", function(s) {s.crossDomain = true;});
-var Keynes = {};
+var Keynes = {
+	"Model":{
+		"Base": {},
+		"Association":{}
+	},
+	"Models":{
+		
+	}
+};
 
 /* 
 		Originally from: http://stackoverflow.com/questions/4288759/asynchronous-for-cycle-in-javascript
@@ -49,7 +57,8 @@ var KeynesStartUpFiles = function(){
 		 "/mvc/model/exceptions/inserting_to_local_database_failed_error.js",
 		 "/mvc/model/exceptions/local_find_error.js",
 		 "/mvc/model/find.js",
-		 "/mvc/keynesian.model.js"
+		 "/mvc/keynesian.model.js",
+		 "/mvc/model/associations.js"
 		];
 }
 KeynesStartUpFiles.call(Keynes)

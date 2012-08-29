@@ -1,5 +1,4 @@
-var Find = {}
-var AbstractFind = function(opts){	
+Keynes.Model.Find = function(opts){	
 	
 	var db = opts.db
 	var name = opts.name
@@ -11,17 +10,40 @@ var AbstractFind = function(opts){
 
 	this.set_self = function(s){ self = s; }
 
-	function convert_table_instances_to_model_instances(tbl_instances){
+	function convert_table_to_model(){
+		var tbl_instances, from_association;
+		
+		tbl_instances = arguments[0];
+
+		if(typeof arguments[1] == "boolean"){
+			from_association = arguments[1]
+			fk_from_association = arguments[2]
+		}
+
 		var instances = []
+
 		for(tbl_inst in tbl_instances){
-			var inst = self.build_instance(tbl_instances[tbl_inst])
+			
+			var inst;
+
+			if(!from_association){
+				inst = self.build_instance(tbl_instances[tbl_inst])
+			}else{
+
+				inst = self.build_instance(tbl_instances[tbl_inst], true, fk_from_association)
+
+			}
+			
 			instances.push(inst)
 		}
+
 		return instances;
 	}
 
 	this.all = function(){
+
 		var result = ""
+
 		if(db){
 			try {
 				var str = "["+db.getItem(name)+"]"
@@ -30,12 +52,29 @@ var AbstractFind = function(opts){
 				Logger.error(e)
 			}
 		}
-		instances = convert_table_instances_to_model_instances(result[0])
-		return instances;
+
+		instances = convert_table_to_model(result[0])
+
+		if(instances.length > 0){
+
+			return instances;
+
+		}else{
+
+			return null;
+		}
 	}
 	
-	this.byId = function(id){
-		var result = ""
+	this.byId = function(){
+		var id = arguments[0]
+		var from_association, result, instance;
+		
+		// @from_association is to prevent circular lookups from
+		// has_many and belongs_to
+
+		if(typeof arguments[1] == "boolean")
+			from_association = arguments[1]
+
 		if(db){
 			try {
 				var str = "["+db.getItem(name)+"]"
@@ -45,23 +84,57 @@ var AbstractFind = function(opts){
 				Logger.error(e)
 			}
 		}
-		return this.build_instance(result)
+		
+		if(!from_association){
+			this.build_instance(result);
+		}
+
+		if(instance){
+
+			return instance
+
+		}else{
+
+			return null
+
+		}
 	}
 	
-	this.by = function(key, value){
-		var result = []
+	this.by = function(){
+		
+		var key, value, from_association;
+		var result = [];
+
+		key = arguments[0]
+		value = arguments[1]
+		
+		if(typeof arguments[2] == "boolean")
+			from_association = arguments[2];
+
 		if(db){
 			try {
 				var str = "["+db.getItem(name)+"]"
 				table = jQuery.parseJSON(str);
-				instances = convert_table_instances_to_model_instances(table[0])
-				found = false
+				var instances;
+
+				if(!from_association){
+					instances = convert_table_to_model(table[0])
+				}else{
+					
+					instances = convert_table_to_model(table[0], from_association, key)
+					
+				}
+
 				for(i in instances){
-					if(instances[i][key] == value)
+					
+					if(instances[i][key] == value){
+
 						result.push(instances[i]);
+
+					}
 				}
 			}catch(e){
-				LocalFind.log("Nothing found matching key: `"+key+"` with value: "+value)
+				Logger.log("Nothing found matching key: `"+key+"` with value: "+value)
 			}
 		}
 		return result	

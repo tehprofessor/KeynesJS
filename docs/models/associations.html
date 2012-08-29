@@ -10,23 +10,24 @@
 	<body>
 				<h1><a href="/docs/index.html">KeynesJS</a></h1>
 				
-				<h2> KeynesianModel </h2>
+				<h2> <a href="/docs/model.html">Keynes.Model</a>.Associations </h2>
 	<table>
 		<tr>
 			<td id="left">
 				<ul>
-					<li><b>CRUD</b></li>
+					<li><b>Private Methods</b></li>
+					<li>belongs_to</li>
+					<li>has_many</li>
+				</ul>
+				<ul>
+					<li><b>Public Methods</b></li>
 					<li>create</li>
-					<li>save</li>
-					<li>destroy</li>
-					<li>update</li>
-					<li>find</li>
 				</ul>
 			</td>
 
 			<td id="right">
 				
-				<h4><b>create</b>(<i>options</i>, <i>object</i>, <i>callback</i>) => Object </h4>
+				<h4><b>belongs_to</b>(<i>options</i>, <i>object</i>, <i>callback</i>) => Object </h4>
 				
 				Writes data to localDatabase or to server
 				
@@ -42,7 +43,7 @@
 			
 			
 			
-				<h4><b>save</b>(<i>options</i>, <i>object</i>, <i>callback</i>) => Object </h4>
+				<h4><b>has_many</b>(<i>instance</i>, <i>parent</i>, <i>from_association</i>) => Keynes.Model.Base </h4>
 				
 				Writes data to localDatabase or to server
 				
@@ -84,7 +85,7 @@
 				
 				<h4><b>find</b> => Function</h4>
 				
-				Returns the <code><a href="/docs/find.html">Find</a></code> function
+				Returns the <code><a href="/docs/models/find.html">Find</a></code> function
 
 
 

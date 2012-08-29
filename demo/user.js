@@ -3,10 +3,13 @@
 
 // currently only supports localStorage, remote support coming soon
 
-var User = new Keynes.Model("User", {
+var User = new Keynes.Model.Base("User", {
 	storage: {
 		remote: false,
 		local: true
+	},
+	has_many: {
+		posts: "Post"
 	},
 	attributes: {
 		"email":"",
@@ -17,7 +20,3 @@ var User = new Keynes.Model("User", {
 		return (this.first_name +" "+ this.last_name)
 	}
 });
-// Class Methods
-User.find_by_email = function(){
-
-}
