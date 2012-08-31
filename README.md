@@ -15,11 +15,17 @@ The sun set that night and in the morning, I awoke next to an oracle disguised l
 
 I will only use HTML. I will only use the actual tool for the job. I will eliminate the guise of complexity, in the name of simplicity. "Am I alive?" I quitetly ponder... "why am I still wearing this mustache?" Because mustaches don't contain logic.
 
-### Road Map ####
+### Depends On ###
 
-1. Keynes.Model
-1. Keynes.Controller
-1. Keynes.View
+jQuery, Mustache.js, and probably underscore.js
+
+### Overall Road Map ####
+
+1. Keynes.Model: data access and storage (local and remote)
+1. Keynes.Controller: managing states (views), history, and syncing data changes
+1. Keynes.View: templates (to be powered by mustache.js)
+
+Currently on: Keynes.Model (local data storage)
 
 #### Currently Under Heavy Development ####
 
