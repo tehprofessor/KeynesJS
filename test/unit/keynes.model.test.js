@@ -162,3 +162,13 @@ test("unapply returns data object", function(){
 			ok(true, "Attribute correctly unapplied")
 	}
 });
+
+test("find is an instance of Keynes.Model.Find", function(){
+	u = UserFactory.create();
+
+	var model = u[0], default_data = u[1]
+
+	if(model.find instanceof Keynes.Model.Find){
+		ok(true, "find is an instance of Keynes.Model.Find")
+	}
+});

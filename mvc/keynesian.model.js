@@ -118,6 +118,8 @@ Keynes.Model.Base = function() {
 			instance[fk_from_association] = arguments[0][fk_from_association]
 		};
 
+		// Unapply returns an object which can be saved to the database (i.e. without instance methods)
+
 		instance["unapply"] = function(){
 
 			var dao = {}

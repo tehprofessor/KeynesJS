@@ -85,8 +85,8 @@ Keynes.Model.Find = function(opts){
 			}
 		}
 		
-		if(!from_association){
-			this.build_instance(result);
+		if(typeof from_association == "undefined"){
+			instance = self.build_instance(result);
 		}
 
 		if(instance){
