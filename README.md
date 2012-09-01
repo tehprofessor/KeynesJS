@@ -1,6 +1,6 @@
 # Keynes.js #
 
-A client-side MVC JS framework for development of modern web-applications.
+A client-side MVC JS framework for development of modern web-applications. Please check out the docs, and code for examples and information on how it all works.
 
 ### Why? ###
 
@@ -37,4 +37,4 @@ whether I want the data store to live in browser memory and sync it from time
 to time. I'm leaning towards not having a JS datastore, and continuing to
 use localStorage as its well supported and persistent... Plus most end users
 will behave somewhat erratically and loading/writing/reading localStorage into
-a relational data store might be more trouble than its worth.
+an in memory relational data store might be more trouble than its worth.

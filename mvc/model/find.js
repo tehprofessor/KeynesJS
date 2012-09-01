@@ -6,9 +6,7 @@ Keynes.Model.Find = function(opts){
 		Remember to use @self inside of private methods instead of `this`
 		or the reference will not be to the correct object.
 	*/
-	var self = this;
-
-	this.set_self = function(s){ self = s; }
+	var self = opts.model;
 
 	function convert_table_to_model(){
 		var tbl_instances, from_association;
@@ -27,7 +25,9 @@ Keynes.Model.Find = function(opts){
 			var inst;
 
 			if(!from_association){
+
 				inst = self.build_instance(tbl_instances[tbl_inst])
+
 			}else{
 
 				inst = self.build_instance(tbl_instances[tbl_inst], true, fk_from_association)
@@ -78,6 +78,7 @@ Keynes.Model.Find = function(opts){
 		if(db){
 			try {
 				var str = "["+db.getItem(name)+"]"
+				console.log(str)
 				table = jQuery.parseJSON(str);
 				result = table[0][id]
 			}catch(e){
