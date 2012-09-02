@@ -5,6 +5,7 @@
 	@idea 		Create constructor for to wrap data objects?
 	@idea		Create relational data-store in memory, and save on unload
 	@idea 		Sync over websockets
+	@idea 		Type checking on the columns
 
 */
 
@@ -50,7 +51,7 @@ Keynes.Model.Base = function() {
 
 	*/
 
-	var db = (typeof localStorage != "undefined") ? localStorage : NoLocalStorageError.alert
+	var db = (typeof localStorage != "undefined") ? localStorage : Keynes.Error.NoLocalStorage("No `localStorage` present! \n"+"Certain features may not behave correctly, "+"please use the newest version of Chrome, Safari, or Firefox")
 
 	/* 
 

@@ -9,7 +9,7 @@
 		delete debugMode
 */
 
-var Logger = {}
+Keynes.Logger = {}
 var AbstractLogger = function(){
 	
 	this.log = function(message){
@@ -52,4 +52,4 @@ var AbstractLogger = function(){
 	}
 
 }
-AbstractLogger.call(Logger)
+AbstractLogger.call(Keynes.Logger)

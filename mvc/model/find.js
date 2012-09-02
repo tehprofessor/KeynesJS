@@ -1,3 +1,13 @@
+/* 
+
+	All public find methods will return one of three things:
+
+	1.) A single instance of your model (an object)
+	2.) An array of instances of your model (an array of objects).
+	3.) null if nothing is found
+
+*/
+
 Keynes.Model.Find = function(opts){	
 	
 	var db = opts.db
@@ -8,11 +18,50 @@ Keynes.Model.Find = function(opts){
 	*/
 	var self = opts.model;
 
+	/* 
+		@private 				parse()
+
+		@param[String]			name 							The key to lookup the model
+		
+		@return[Object] 		table 							The psuedo table for the model
+	*/
+
+	function parse(){
+
+		var table;
+
+		try{
+
+			var str = "["+db.getItem(name)+"]"
+			table = jQuery.parseJSON(str);
+
+		}catch(e){
+
+			var msg = "Error parsing table "+name;
+			new Keynes.Error.CannotParseLocalStorage(msg);
+		}
+
+		return table;
+	}
+
+	/* 
+		
+		@private 				convert_table_to_model()
+
+		@param[object]			arguments[0] 					The JSON object representing the table (i.e. psuedo table)
+		@param[Boolean] 		arguments[1]					If call is from, or for, a relationship
+		@param[String]			arguments[2]					The foreign key to be used
+
+		@return[Object] 		instances 						An instance of each model
+
+	*/
+
 	function convert_table_to_model(){
+
 		var tbl_instances, from_association;
 		
 		tbl_instances = arguments[0];
-
+		
 		if(typeof arguments[1] == "boolean"){
 			from_association = arguments[1]
 			fk_from_association = arguments[2]
@@ -42,16 +91,7 @@ Keynes.Model.Find = function(opts){
 
 	this.all = function(){
 
-		var result = ""
-
-		if(db){
-			try {
-				var str = "["+db.getItem(name)+"]"
-				result = jQuery.parseJSON(str);
-			}catch(e){
-				Logger.error(e)
-			}
-		}
+		var table = parse();
 
 		instances = convert_table_to_model(result[0])
 
@@ -66,6 +106,7 @@ Keynes.Model.Find = function(opts){
 	}
 	
 	this.byId = function(){
+
 		var id = arguments[0]
 		var from_association, result, instance;
 		
@@ -74,20 +115,19 @@ Keynes.Model.Find = function(opts){
 
 		if(typeof arguments[1] == "boolean")
 			from_association = arguments[1]
-
-		if(db){
-			try {
-				var str = "["+db.getItem(name)+"]"
-				console.log(str)
-				table = jQuery.parseJSON(str);
-				result = table[0][id]
-			}catch(e){
-				Logger.error(e)
-			}
-		}
 		
+		table = parse();
+		result = table[0][id]
+	
+		// Check if this is being called by an association (it shouldn't be!)
+		// all relationships should be looked up using find#by.
+
 		if(typeof from_association == "undefined"){
-			instance = self.build_instance(result);
+			
+			// Check to see if something was actually `found` matching the id. If not,
+			// set instance to undefined so this function returns `null`
+
+			instance = (typeof result == "object") ? self.build_instance(result) : undefined
 		}
 
 		if(instance){
@@ -103,7 +143,7 @@ Keynes.Model.Find = function(opts){
 	
 	this.by = function(){
 		
-		var key, value, from_association;
+		var key, value, from_association, table, instances;
 		var result = [];
 
 		key = arguments[0]
@@ -112,33 +152,39 @@ Keynes.Model.Find = function(opts){
 		if(typeof arguments[2] == "boolean")
 			from_association = arguments[2];
 
-		if(db){
-			try {
-				var str = "["+db.getItem(name)+"]"
-				table = jQuery.parseJSON(str);
-				var instances;
 
-				if(!from_association){
-					instances = convert_table_to_model(table[0])
-				}else{
+		table = parse();
+
+		if(!from_association){
+
+			instances = convert_table_to_model(table[0])
+			
+		}else{
 					
-					instances = convert_table_to_model(table[0], from_association, key)
+			instances = convert_table_to_model(table[0], from_association, key)
 					
-				}
-
-				for(i in instances){
-					
-					if(instances[i][key] == value){
-
-						result.push(instances[i]);
-
-					}
-				}
-			}catch(e){
-				Logger.log("Nothing found matching key: `"+key+"` with value: "+value)
-			}
 		}
-		return result	
+
+		for(i in instances){
+
+			if(instances[i][key] == value){
+
+				result.push(instances[i]);
+
+			}
+
+		}
+
+		if(result.length > 0){
+
+			return result;	
+
+		}else{
+
+			return null
+
+		}
+		
 	}
 	
 }

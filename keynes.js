@@ -1,12 +1,17 @@
 jQuery.ajaxPrefilter("script", function(s) {s.crossDomain = true;});
 var Keynes = {
-	"Model":{
-		"Base": {},
-		"Association":{}
-	},
-	"Models":{
-		
-	}
+		"Model":{
+			"Base": {},
+			"Find": {},
+			"Association":{}
+	
+		},
+		"Error":{
+			"Model":{},
+			"Controller":{},
+			"View":{}
+		},
+		"Models":{}
 };
 
 /* 
@@ -52,10 +57,10 @@ AsyncLoop.call(Keynes)
 var KeynesStartUpFiles = function(){ 
 	this.framework_startup_files = 
 		["/utils/keynesian.logger.js",
+		 "/mvc/exceptions/keynes.error.base.js",
+		 "/mvc/exceptions/keynes.error.startup.js",
 		 "/utils/router.js",
-		 "/mvc/model/exceptions/no_local_storage_error.js",
-		 "/mvc/model/exceptions/inserting_to_local_database_failed_error.js",
-		 "/mvc/model/exceptions/local_find_error.js",
+		 "/mvc/model/exceptions/keynes.model.errors.js",
 		 "/mvc/model/find.js",
 		 "/mvc/keynesian.model.js",
 		 "/mvc/model/associations.js"
@@ -83,15 +88,20 @@ var powerButtons = function(){
 		}
 
 		this.asyncLoop(startup_files.length, function(loop){
+			
 			$.getScript(startup_files[loop.iteration()])
 			 .done(function(script, status){
-			 	console.log("Loaded: " + startup_files[loop.iteration()]);
+
+			 	Keynes.Logger.log("Loaded: " + startup_files[loop.iteration()]);
 			 	loop.next();
 			 })
 			 .fail(function(xhr, settings, exception){
-			 	console.log("failed! files: "+startup_files+" iteration: "+loop.iteration())
-			 	console.log("Failed to load: " + startup_files[loop.iteration()]);
+
+			 	var msg = "Missing file <"+startup_files[loop.iteration()]+">"
+			 	new Keynes.Error.FileNotFoundError(msg)
+			 	
 			});
+
 		
 		}, function(){
 			Router.call(Keynes);

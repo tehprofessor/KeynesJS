@@ -2,6 +2,18 @@
 
 A client-side MVC JS framework for development of modern web-applications. Please check out the docs, and code for examples and information on how it all works.
 
+#### Currently Under Heavy Development ####
+
+**Update** 31/08/2012
+
+Tests are currently passing. I'm still working on the belongs_to relationship,
+and deciding if I want to allow more complex ones. Most of the hold up is
+whether I want the data store to live in browser memory and sync it from time
+to time. I'm leaning towards not having a JS datastore, and continuing to
+use localStorage as its well supported and persistent... Plus most end users
+will behave somewhat erratically and loading/writing/reading localStorage into
+an in memory relational data store might be more trouble than its worth.
+
 ### Why? ###
 
 Too often, I find myself in some sort of desperate hell surrounded by erb or haml,
@@ -26,15 +38,3 @@ jQuery, Mustache.js, and probably underscore.js
 1. Keynes.View: templates (to be powered by mustache.js)
 
 Currently on: Keynes.Model (local data storage)
-
-#### Currently Under Heavy Development ####
-
-**Update** 31/08/2012
-
-Tests are currently passing. I'm still working on the belongs_to relationship,
-and deciding if I want to allow more complex ones. Most of the hold up is
-whether I want the data store to live in browser memory and sync it from time
-to time. I'm leaning towards not having a JS datastore, and continuing to
-use localStorage as its well supported and persistent... Plus most end users
-will behave somewhat erratically and loading/writing/reading localStorage into
-an in memory relational data store might be more trouble than its worth.
