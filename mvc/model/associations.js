@@ -16,15 +16,39 @@ Keynes.Model.Association = function (){
 
 	}
 
-	function belongs_to(p, c){
-
-		var foreign_key = c.toLowerCase()+"_id"
-		var fk_id = p[foreign_key]
-
-		result = Keynes.Models[c].find.byId(fk_id, true)
+	/* 
+		@private 				belongs_to()
 		
-		return result;
+		@param[Object]			child								The child class which has the `belongs_to` association
+		@param[String]			parent 								The parent class name (owner) of the relationship
+		
+		@return[Object]			result 								The instance of the parent model (it does not contain association data) 				
+
+	*/
+
+
+	function belongs_to(child, parent){
+		
+		var foreign_key = parent.toLowerCase()+"_id"
+		var fk_id = child[foreign_key]
+
+		result = Keynes.Models[parent].find.by('id', fk_id, true)
+
+		if(result.length == 1){
+			return result[0];
+		}else{
+			return null;
+		}
 	}
+
+	/*
+
+		@private 				has_many()
+
+		@
+		
+
+	*/
 
 	function has_many(parent, child){
 		

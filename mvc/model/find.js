@@ -160,7 +160,7 @@ Keynes.Model.Find = function(opts){
 			instances = convert_table_to_model(table[0])
 			
 		}else{
-					
+			
 			instances = convert_table_to_model(table[0], from_association, key)
 					
 		}
