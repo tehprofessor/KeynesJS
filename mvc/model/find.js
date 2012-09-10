@@ -58,7 +58,7 @@ Keynes.Model.Find = function(opts){
 
 	function convert_table_to_model(){
 
-		var tbl_instances, from_association;
+		var tbl_instances, from_association, fk_from_association;
 		
 		tbl_instances = arguments[0];
 		
@@ -69,7 +69,7 @@ Keynes.Model.Find = function(opts){
 
 		var instances = []
 
-		for(tbl_inst in tbl_instances){
+		for(var tbl_inst in tbl_instances){
 			
 			var inst;
 
@@ -93,7 +93,7 @@ Keynes.Model.Find = function(opts){
 
 		var table = parse();
 
-		instances = convert_table_to_model(result[0])
+		var instances = convert_table_to_model(table[0])
 
 		if(instances.length > 0){
 
@@ -116,7 +116,7 @@ Keynes.Model.Find = function(opts){
 		if(typeof arguments[1] == "boolean")
 			from_association = arguments[1]
 		
-		table = parse();
+		var table = parse();
 		result = table[0][id]
 	
 		// Check if this is being called by an association (it shouldn't be!)
@@ -165,7 +165,7 @@ Keynes.Model.Find = function(opts){
 					
 		}
 
-		for(i in instances){
+		for(var i in instances){
 
 			if(instances[i][key] == value){
 

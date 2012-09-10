@@ -130,7 +130,7 @@ Keynes.Model.Base = function() {
 	*/
 
 	function initializeModelInDatabase(){
-		existing = db.getItem(model_name);
+		var existing = db.getItem(model_name);
 		if(db){
 			if((!existing)){
 				createTable();
@@ -174,8 +174,12 @@ Keynes.Model.Base = function() {
 
 	function build_instance(){
 
-		var instance = {"_type":model_name,"id":""};
-		var from_association, fk_from_association;
+		var instance, 
+			from_association, 
+			fk_from_association,
+			foreign_key_data; // Create belongs_to relationship, @foreign_key_data is used in the unapply method
+
+		instance = {"_type":model_name,"id":""};
 
 		// Establish if #build_instance is being called for a relationship, and if it is, prevent looking up the model which called #build_instance
 
@@ -186,7 +190,7 @@ Keynes.Model.Base = function() {
 
 		// Set empty model attributes (properties)
 
-		for(attr in attrs){
+		for(var attr in attrs){
 			instance[attr] = ""
 		};
 
@@ -206,7 +210,7 @@ Keynes.Model.Base = function() {
 
 		// Setup instance methods
 
-		for(method in model){
+		for(var method in model){
 			if((method != "attributes") && (method != "belongs_to") && (method != "has_many") && (method != "storage")){
 
 				instance[method] = model[method]
@@ -217,7 +221,7 @@ Keynes.Model.Base = function() {
 		// Create has_many relationship
 
 		if((typeof model.has_many != "undefined") && (!from_association)){
-			for(ass_model in model.has_many){
+			for(var ass_model in model.has_many){
 
 				var c = model.has_many[ass_model]
 				instance[ass_model] = (new Keynes.Model.Association(instance, c, "has_many").create()); 	
@@ -225,16 +229,11 @@ Keynes.Model.Base = function() {
 			}
 		}
 
-		// Create belongs_to relationship, 
-		// @foreign_key_data is used in the unapply method
-
-		var foreign_key_data;
-
 		// Create the belongs to relationship
 		// TODO: Review this code, it seems a bit sketch
 
 		if((typeof model.belongs_to != "undefined") && (!from_association)){
-			for(ass_model in model.belongs_to){
+			for(var ass_model in model.belongs_to){
 
 				var c = model.belongs_to[ass_model]
 
@@ -270,7 +269,7 @@ Keynes.Model.Base = function() {
 			// Assign each of the properties from the model
 			// to the data object.
 
-			for(a in attrs){
+			for(var a in attrs){
 
 				dobj[a] = instance[a]
 
@@ -402,13 +401,14 @@ Keynes.Model.Base = function() {
 
 	/* 
 
-		@public 				reset_table()					Removes all the data currently saved to the model's table (only works for localStorage)
+		@public 				reset_table()					Permanently removes all the data currently saved to the model's table (only works for localStorage)
 
 	*/
 
 	this.reset_table = function(){
 
 		db.removeItem(model_name)
+		initializeModelInDatabase();
 
 	}
 

@@ -4,6 +4,28 @@ A client-side MVC JS framework for development of modern web-applications. Pleas
 
 #### Currently Under Heavy Development ####
 
+**Update** 03/04/2012
+
+Keynes.Model with localStorage is working as it should, and has tests... (though there could/should be more). I'm currently working on the Controllers and Views. It'll probably be pretty gruesome over the next week as work progresses. 
+
+I'll begin work on a `remoteStorage` option as the controllers and views finish up. It'll most
+likely: use localStorage as a cache, offline mode, and backup, then syncing with the remote server.
+
+With this commit I've added:
+
+* `keynes.controller.js` is the base of the controller
+* `keynes.historian.js` is used by routes and the controller to manage the history
+
+_Additional Notes_
+
+A view will have two components: logic and template. The former containing methods and functions, the latter HTML (with mustache markup). My goal is to completely remove the need to put logic in the templates.
+
+The models are pretty well supported by Mustache.js as they return the objects it (Mustache) 
+will render (arrays are a little rough, but if you know how to use mustache it should be easy).
+This will be worked out as the week goes on...
+
+
+
 **Update** 31/08/2012
 
 Tests are currently passing. I'm still working on the belongs_to relationship,

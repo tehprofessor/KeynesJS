@@ -11,7 +11,10 @@ var Keynes = {
 			"Controller":{},
 			"View":{}
 		},
-		"Models":{}
+		"Historian":{},
+		"Models":{},
+		"Controllers":{},
+		"Router":{}
 };
 
 /* 
@@ -59,11 +62,13 @@ var KeynesStartUpFiles = function(){
 		["/utils/keynesian.logger.js",
 		 "/mvc/exceptions/keynes.error.base.js",
 		 "/mvc/exceptions/keynes.error.startup.js",
-		 "/utils/router.js",
+		 "/mvc/router/keynes.router.js",
 		 "/mvc/model/exceptions/keynes.model.errors.js",
 		 "/mvc/model/find.js",
-		 "/mvc/keynesian.model.js",
-		 "/mvc/model/associations.js"
+		 "/mvc/keynes.model.js",
+		 "/mvc/model/associations.js",
+		 "/mvc/controller/keynes.controller.base.js",
+		 "/mvc/router/keynes.historian.js"
 		];
 }
 KeynesStartUpFiles.call(Keynes)
@@ -104,7 +109,7 @@ var powerButtons = function(){
 
 		
 		}, function(){
-			Router.call(Keynes);
+			// Router.call(Keynes);
 			// BootUp.call(Keynes);
 		});
 	
