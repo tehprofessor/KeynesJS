@@ -56,7 +56,6 @@ Keynes.Router = function(){
     */
 
     function toParams(str){
-
         var result = str.split(/\&/).reduce(function(a,b){
 
             var key, _t, o;
@@ -86,15 +85,23 @@ Keynes.Router = function(){
         return result;
     }
 
+    /* 
+
+        @private                splitPath()                     Turns a path into an array
+
+        @param[String]          path                            The path, e.g. /users/22
+
+    */
+
     function splitPath(path){
 
-        path = path.split("/").reduce(function(a,b){
-            return (a) ? 
-                (!isEmptyString(b)) ? a.concat(b) : a
-                : (!isEmptyString(b)) ? [b] : null
+        var path_array = [];
+
+        path.split("/").map(function(piece){
+            if(!isEmptyString(piece)) path_array.push(piece)
         });
 
-        return path;
+        return path_array;
     }
 
     function map(path, controller_action){
