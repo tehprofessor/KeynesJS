@@ -6,15 +6,27 @@ var Keynes = {
 			"Association":{}
 	
 		},
+		"Controller":{
+			"Base":{}
+		},
+		"View": {
+			"Base": {}
+		},
 		"Error":{
 			"Model":{},
 			"Controller":{},
 			"View":{}
 		},
 		"Historian":{},
+		"History":{},
 		"Models":{},
 		"Controllers":{},
-		"Router":{}
+		"Views": {},
+		"Routing":{
+			"Base": {}
+		},
+		"Router":{},
+		"Dispatcher":{}
 };
 
 /* 
@@ -62,13 +74,18 @@ var KeynesStartUpFiles = function(){
 		["/utils/keynesian.logger.js",
 		 "/mvc/exceptions/keynes.error.base.js",
 		 "/mvc/exceptions/keynes.error.startup.js",
+		 "/mvc/exceptions/keynes.error.no_layout_found.js",
+		 "/mvc/exceptions/keynes.error.layout_type_error.js",
+		 "/mvc/exceptions/keynes.error.view_not_found.js",
 		 "/mvc/router/keynes.router.js",
+		 "/mvc/keynes.dispatcher.js",
 		 "/mvc/model/exceptions/keynes.model.errors.js",
 		 "/mvc/model/find.js",
 		 "/mvc/keynes.model.js",
 		 "/mvc/model/associations.js",
 		 "/mvc/controller/keynes.controller.base.js",
-		 "/mvc/router/keynes.historian.js"
+		 "/mvc/router/keynes.historian.js",
+		 "/mvc/view/keynes.view.base.js"
 		];
 }
 KeynesStartUpFiles.call(Keynes)
@@ -89,7 +106,16 @@ var powerButtons = function(){
 		if (config.environment == "test"){
 			startup_files = startup_files.concat(config.tests)
 		}else{
-			startup_files = startup_files.concat(config.models)
+			startup_files = startup_files
+							.concat(config.models.map(function(model){
+								var str = !window.KEYNES_DEV ? "/models/" : "/demo/models/"
+								return str+model;
+							}))
+							.concat(config.controllers.map(function(controller){
+								var str = !window.KEYNES_DEV ? "/controllers/" : "/demo/controllers/"
+								return str+controller;
+							}))
+							.concat(config.routes);
 		}
 
 		this.asyncLoop(startup_files.length, function(loop){
@@ -97,7 +123,7 @@ var powerButtons = function(){
 			$.getScript(startup_files[loop.iteration()])
 			 .done(function(script, status){
 
-			 	Keynes.Logger.log("Loaded: " + startup_files[loop.iteration()]);
+			 	Keynes.Logger.log("Loaded: " + startup_files[ loop.iteration() ]);
 			 	loop.next();
 			 })
 			 .fail(function(xhr, settings, exception){

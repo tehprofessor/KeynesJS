@@ -4,7 +4,19 @@ A client-side MVC JS framework for development of modern web-applications. Pleas
 
 #### Currently Under Heavy Development ####
 
-**Update** 03/04/2012
+**Update** 29/09/2012
+
+Huge rewrite of the controller. `/demo` updated to be a bit more realistic. Currently working on layout rendering; as of writing this it only supports `actions` but that'll be broadened shortly. 
+
+Currently, it doesn't support remote data APIs for the models. This is something I'm 100% going to add in-- once I finish the controllers, views and historian. I'd say they're roughly 70% complete.
+
+I'm also looking into the possibility of the framework storing most of itself in localStorage to speed up load times.
+
+**Update** 09/09/2012
+
+The router is working. I need to write tests and document it properly.
+
+**Update** 03/09/2012
 
 Keynes.Model with localStorage is working as it should, and has tests... (though there could/should be more). I'm currently working on the Controllers and Views. It'll probably be pretty gruesome over the next week as work progresses. 
 

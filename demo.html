@@ -11,29 +11,23 @@
 		</script>
 	</head>
 	<body>
-
+		<a href="#/users/1" title="">User 1</a>
+		<a href="#/users/2" title="">User 2</a>
 	</body>
-	<script id="layout_tmpl" type="text/html">
-		<div id="page-wrapper">
-			<b>Legendary Economists</b>
-			<ul>
-				{{#users}}
-					<li>{{full_name}}</li>
-				{{/users}}
-			</ul>
-		</div>
-	</script>
 	<script type="text/javascript">
 	$(document).ready(function(){
 
 		var config = {
 			"environment" : "development",
-			"models" : ["/demo/user.js", "/demo/post.js"],
-			"controllers" : [],
+			"models" : ["user.js", "post.js"],
+			"controllers" : ["users_controller.js"],
+			"routes": "/demo/routes.js",
 			"tests" : [
 			"test/unit/keynesian.model.test.js" 
 			]
 		}
+		window.KEYNES_DEV = true;
+
 		Keynes.powerOn(config);
 
 	});

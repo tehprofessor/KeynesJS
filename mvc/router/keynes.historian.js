@@ -14,8 +14,7 @@ Keynes.Historian.Base = function(){
 	$(window).bind('hashchange', function(){
 		
 		var hash = window.location.hash;
-		
-		history.push(hash);
+		Keynes.Router.routeIt(hash.replace(/\#/,''));
 
 	});
 
@@ -25,8 +24,7 @@ Keynes.Historian.Base = function(){
 
 	this.back = function(){
 		if(current_offeset > 0) current_offeset--;
-
-		return history[current_offeset]
+		window.location.hash = history[current_offeset]
 	}
 
 	this.forward = function(){
@@ -49,4 +47,6 @@ Keynes.Historian.Base = function(){
 		}
 	}
 
+	Keynes.History = this;
 }
+new Keynes.Historian.Base();

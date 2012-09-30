@@ -1,12 +1,14 @@
-Keynes.Router = function(){
+Keynes.Routing.Base = function(){
     
     var routing_table = {};
+    
     /* 
         @public                 routes                      Public method to access the routing table
 
         @return[Object]
 
     */
+
     this.routes = routing_table;
 
     /* 
@@ -56,32 +58,15 @@ Keynes.Router = function(){
     */
 
     function toParams(str){
-        var result = str.split(/\&/).reduce(function(a,b){
 
-            var key, _t, o;
+        var result;
+        result = {};
 
-            if(typeof a == "object"){
-
-                if(isParameter(b)){
-
-                    _t = b.split(/\=/);
-                    key = _t[0];
-                    a[key] = _t[1];
-                    return a;
-                }
-
-            }else{
-
-                if(isParameter(b)){
-                    _t = b.split(/\=/);
-                    key = _t[0]; 
-                    var _o = {}; 
-                    _o[key] = _t[1];
-                    return _o;
-                }
-                
-            }
+        str.split(/\&/).map(function(key_val){
+            var k_v_array = key_val.split(/\=/)
+            result[k_v_array[0]] = k_v_array[1]
         });
+
         return result;
     }
 
@@ -104,15 +89,18 @@ Keynes.Router = function(){
         return path_array;
     }
 
-    function map(path, controller_action){
+    function mapAction(path, controller_action){
 
-        var action, // the controller action
+        var _params, // Temporary object to hold params
+            params, // array of parameter names (names of the variables, e.g. id, user_id, age)
+            action, // the controller action
             controller, // the controller
             path_array, // an array of the path (i.e. the path's pieces )
             path_length, // the number of items in path_array
             named_param, // regex to extract named parameters
             splat_param, // regex to extract splat parameters
-            escape_reg_exp; // regex to escape regular expressions
+            escape_reg_exp, // regex to escape regular expressions
+            final_path;
 
         // Assign variables their values
         
@@ -130,6 +118,10 @@ Keynes.Router = function(){
         splat_param    = /\*\w+/g;
         escape_reg_exp  = /[-[\]{}()+?.,\\^$|#\s]/g;
 
+
+        _params = path.match(named_param)
+        params = []
+
         /* 
 
             Alright, this is an idea I'm trying out, the
@@ -144,29 +136,99 @@ Keynes.Router = function(){
             more complex ones, I'd expect it to outperform.
 
         */
+        
         if(routing_table[path_length] == undefined) routing_table[path_length] = [];
 
-        var final_path = path.replace(escape_reg_exp, '\\$&')
+        final_path = path.replace(escape_reg_exp, '\\$&')
                    .replace(named_param, '([^\/]+)')
                    .replace(splat_param, '(.*?)');
 
+        if(_params != null){
+
+            _params.map(function(param){
+                 params.push(param.replace(/(^\:|\*)/, ''));
+            });
+
+        }
+
         routing_table[path_length].push({
 
-            path: final_path,
-            controller: controller,
-            action: action,
-            params: path.match(named_param)
+            "path": final_path,
+            "controller": controller,
+            "action": action,
+            "params": params
 
         });
+
+        
+
+    }
+
+    function mapResource(path, controller){
+
+        var actions;
+        actions = ["index", "show", "edit", "new", "update", "destroy"]
+
+        for(var i = 0; i < actions.length; i++){
+            /* 
+
+                @param[String]          resource_path             The path with the action appended
+                @param[String]          resource_action           The controller with the action appended
+
+            */
+
+            var resource_path, resource_action;
+
+
+            resource_path = path+actions[i];
+            resource_action = controller+"."+actions[i];
+
+            mapAction(resource_path, resource_action);
+
+        }
+
+    }
+
+    /* 
+        @public                 map
+        
+        @param[String]          path
+        @param[Object]          routeDetails
+
+    */
+
+    function map(path, routeDetails){
+        if(typeof routeDetails == "object"){
+            determineRouteTypeAndMapIt(path, routeDetails)
+        }else if(typeof routeDetails == "string") mapAction(path, routeDetails); // it's faster to not use an object, if you just want to route an action.
+    }
+
+
+    function determineRouteTypeAndMapIt(path, routeDetails){
+
+        if(routeDetails.resource != undefined){
+            
+            mapResource(path, routeDetails.resource); 
+
+        }else if(routeDetails.action != undefined){
+            
+            mapAction(path, routeDetails.action);
+
+        }
 
     }
 
     function findRoute(path){
 
         var final_route, path_array, path_length;
+        
+        // This is to get the length of the path (in pieces)
+        // to determine the starting index
 
         path_array = splitPath(path)
         path_length = path_array.length
+
+
 
         matchingRoute:
 
@@ -178,8 +240,27 @@ Keynes.Router = function(){
                 result = path.match(route.path);
 
                 if(result != null){ 
+                    
+                    var params, params_array;
 
-                    final_route = route;
+                    params = {};
+                    params_array = result.slice(1);
+
+                    // Need to clone the route into final_route
+
+                    final_route = {}
+
+                    for(prop in route){
+                        final_route[prop] = route[prop]
+                    }
+
+                    // Go through the params array and assign them to the params obj
+                    
+                    for(var j = 0; j < final_route.params.length; j++){
+                        params[final_route.params[j]] = params_array[j];
+                    }
+                    final_route.params = params
+
                     break matchingRoute;
 
                 }
@@ -190,16 +271,37 @@ Keynes.Router = function(){
     }
 
     this.routeIt = function(){
-        var _route;
-        _route = arguments[0];
+        var _path, path, query;
 
-        final_route = (typeof _route == "string" && _route.length == 1) ? routing_table[0] : findRoute(_route)
+        _path = arguments[0];
 
-        return final_route;
+        path_and_query = _path.split(/\?/);
+
+        if(path_and_query.length <= 1){ 
+
+            path = _path
+
+        }else{ 
+
+            path = path_and_query[0]
+            query = toParams(path_and_query[1]);
+
+        }
+
+        final_route = (typeof path == "string" && path.length == 1) ? routing_table[0] : findRoute(path)
+        if(query != undefined){
+            for(key in query){
+                if(final_route.params[key] == undefined) final_route.params[key] = query[key]
+            }
+        }
+        
+        Keynes.Dispatcher.dispatch(final_route)
 
     }
     
     arguments[0].call(this, map);
+
+    Keynes.Router = this;
 
 
 }

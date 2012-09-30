@@ -6,8 +6,16 @@
 
 // ... I'm a rubyist, I have an appreciation for the aesthetic.
 
-Keynes.Router(function(map){
-    map('/', "UsersContoller.index");
-    map('/users/:id', "UsersContoller.show");
-    map('/users/:id/edit', "UsersContoller.edit");
+new Keynes.Routing.Base(function(map){
+
+    map('/', "UsersController.index" )
+
+    map('/users/:id', "UsersController.show")
+
+    map('/users/:id/edit', "UsersController.edit")
+
+    map('/posts/', {resource: "PostsController"})
+
+    map('/users/:user_id/comments/:id', {resource: "Comments"})
+
 })
