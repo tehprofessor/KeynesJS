@@ -10,6 +10,34 @@ Keynes.Controller.Base = function(){
 	Renderer = {}
 	AsyncLoop.call(Renderer)
 
+	function getHTML(_url){
+		var html;
+		$.ajax({
+			type: "GET",
+			url: _url,
+			dataType: "HTML"
+		})
+		.done(function(data){
+			html = data;
+		})
+		.fail(function(xhr, text){
+			// Needs to be implemented
+			new Keynes.Error.ContentMissing(_url);
+		});
+		return html;
+	}
+
+	function getPartials(partials){
+		for(partial in partials){
+			
+		}
+	}
+
+	function renderLayout(layout){
+		var template = getHTML(layout.template);
+		var partials = getPartials(layout.partials);
+	}
+
 	function renderLayout(layout){
 		var _url;
 		if(!window.KEYNES_DEV){
@@ -87,15 +115,25 @@ Keynes.Controller.Base = function(){
 		success = true;
 
 		if(layout_type == "function"){
+
 			layout = Controller.layout();
+
 		}else if(layout_type == "string") {
+
 			layout = Controller.layout
+
+		}else if(layout_type == "object"){
+
+			layout = Controller.layout.template
+
 		}else{
+
 			new Keynes.Error.LayoutTypeError();
 			success = false;
+			
 		}
 
-		if(!$("#"+layout) && success == true)
+		if($("#"+layout).length == 0 && success == true)
 			renderLayout(layout)
 
 		return success;
@@ -103,7 +141,9 @@ Keynes.Controller.Base = function(){
 
 	Controller.render = function(obj){
 		var result, loadedView;
+
 		result = {};
+
 		if(typeof obj.action != "undefined"){
 			Renderer.asyncLoop(2, function(loop){
 				if(loop.iteration() == 1){
@@ -113,11 +153,14 @@ Keynes.Controller.Base = function(){
 				}
 				
 			}, function(){
+
 				var renderedTemplate = Mustache.to_html($(result.template).html(), obj.locals);
 				loadedView = controller_name.toLowerCase().split("controller")[0]+"/"+obj.action
 				Keynes.Views[loadedView].initialize(renderedTemplate);
+
 			});
 		}
+
 	}
 
 	Controller.process = function(route){

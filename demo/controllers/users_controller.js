@@ -1,10 +1,15 @@
 Keynes.Controller.Base("UsersController", function(){
 	
 	var c = this;
+
 	c.layout = function(params){
-		var layout;
-		layout = "application"
-		return layout
+		return {
+			template: "application",
+			partials: {
+				navigation: "shared/navigation",
+				footer: "shared/footer"
+			}
+		}	
 	}
 
 	c.before = function(){
@@ -16,7 +21,13 @@ Keynes.Controller.Base("UsersController", function(){
 	c.index = function(){
 
 		var users = Users.find.all();
-		render({action: "index"});
+
+		render({
+			action: "index",
+			locals: {
+				"users": users
+			}
+		});
 
 	}
 
@@ -24,7 +35,7 @@ Keynes.Controller.Base("UsersController", function(){
 		var user = User.find.byId(params.id);
 		c.render({
 
-			action: "show", 
+			action: "show",
 			locals: {
 				"user": user
 			}

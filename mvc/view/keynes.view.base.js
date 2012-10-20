@@ -6,5 +6,8 @@ Keynes.View.Base = function(){
 	view_function = arguments[1];
 
 	view_function.call(View)
+	
 	Keynes.Views[view_name] = View;
+
+
 }

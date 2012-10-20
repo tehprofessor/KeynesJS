@@ -1,4 +1,7 @@
 jQuery.ajaxPrefilter("script", function(s) {s.crossDomain = true;});
+
+// Below is more or less the API.
+
 var Keynes = {
 		"Model":{
 			"Base": {},
@@ -16,6 +19,14 @@ var Keynes = {
 			"Model":{},
 			"Controller":{},
 			"View":{}
+		},
+		"Cache": {
+			"on": false,
+			"Models":{},
+			"Controllers":{},
+			"Layouts": {},
+			"Templates": {},
+			"Partials": {}
 		},
 		"Historian":{},
 		"History":{},
@@ -125,6 +136,7 @@ var powerButtons = function(){
 
 			 	Keynes.Logger.log("Loaded: " + startup_files[ loop.iteration() ]);
 			 	loop.next();
+
 			 })
 			 .fail(function(xhr, settings, exception){
 
